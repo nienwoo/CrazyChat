@@ -11,6 +11,8 @@
         <module>chatcommon</module>
         <module>chatserver</module>
         <module>chatclient</module>
+        <module>Tools</module>
+        <module>WebServer</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -24,6 +26,15 @@
         <protobuf.version>2.6.1</protobuf.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <curator.version>2.10.0</curator.version>
+        <guava.version>17.0</guava.version>
+        <httpclientutil.version>1.0</httpclientutil.version>
+        <feign.form.spring.version>3.0.3</feign.form.spring.version>
+        <spring.version>4.3.11.RELEASE</spring.version>
+        <fastjson.version>1.2.29</fastjson.version>
+       <rocketmq.version>4.1.0-incubating</rocketmq.version>
+
     </properties>
 
 
@@ -74,6 +85,12 @@
             <version>1.16.10</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
     </dependencies>
 
 
