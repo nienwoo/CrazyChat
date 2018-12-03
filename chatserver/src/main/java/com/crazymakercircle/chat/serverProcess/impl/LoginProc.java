@@ -28,7 +28,7 @@ public class LoginProc extends AbstractProc
         // 取出token验证
         ProtoMsg.LoginRequest info = proto.getLoginRequest();
 
-        User user= User.fromMsg(info);
+        User user = User.fromMsg(info);
 
         if (StringUtils.isEmpty(user.getToken()))
         {
@@ -42,7 +42,7 @@ public class LoginProc extends AbstractProc
         session.setUser(user);
         SessionMap.sharedInstance().addSession(session.getSessionId(), session);
 
-        String sid=session.getSessionId();
+        String sid = session.getSessionId();
 
         ProtoInstant.ResultCodeEnum resultcode = ProtoInstant.ResultCodeEnum.SUCCESS;
         ProtoMsg.Message response =

@@ -1,9 +1,9 @@
 package com.crazymakercircle.chat.client;
 
+import com.crazymakercircle.chat.ClientSender.ChatSender;
+import com.crazymakercircle.chat.ClientSender.LoginSender;
 import com.crazymakercircle.chat.clientHandler.ChatMsgHandler;
-import com.crazymakercircle.chat.common.ServerSession;
 import com.crazymakercircle.chat.common.bean.User;
-import com.crazymakercircle.chat.common.bean.msg.ProtoMsg;
 import com.crazymakercircle.chat.common.codec.ProtobufDecoder;
 import com.crazymakercircle.chat.common.codec.ProtobufEncoder;
 import io.netty.bootstrap.Bootstrap;
@@ -12,7 +12,6 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.AttributeKey;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +43,8 @@ public class ChatClient
     private ChatMsgHandler chatClientHandler;
 
     private Channel channel;
-    private ClientSender sender;
+    private ChatSender sender;
+    private LoginSender l;
 
     /**
      * 唯一标记
@@ -140,7 +140,8 @@ public class ChatClient
 
             while (!sender.isLogin())
             {
-                sender.sendLoginMsg();
+
+                l.sendLoginMsg();
                 try
                 {
                     Thread.sleep(500);

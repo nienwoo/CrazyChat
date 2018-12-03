@@ -1,7 +1,7 @@
 package com.crazymakercircle.chat.clientHandler;
 
 
-import com.crazymakercircle.chat.client.ClientSender;
+import com.crazymakercircle.chat.ClientSender.LoginSender;
 import com.crazymakercircle.chat.common.ServerSession;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -10,15 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 @Service("ChatClientHandler")
 public class ChatMsgHandler extends ChannelInboundHandlerAdapter
 {
 
-    private ClientSender sender;
+    private LoginSender sender;
 
-    public ChatMsgHandler(ClientSender sender)
+    public ChatMsgHandler(LoginSender sender)
     {
         this.sender = sender;
     }

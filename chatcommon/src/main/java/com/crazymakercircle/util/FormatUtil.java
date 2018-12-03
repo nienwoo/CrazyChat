@@ -4,7 +4,8 @@ package com.crazymakercircle.util;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-public class FormatUtil {
+public class FormatUtil
+{
 
     /**
      * 设置数字格式，保留有效小数位数为fractions
@@ -12,7 +13,8 @@ public class FormatUtil {
      * @param fractions 保留有效小数位数
      * @return 数字格式
      */
-    public static DecimalFormat decimalFormat(int fractions) {
+    public static DecimalFormat decimalFormat(int fractions)
+    {
 
         DecimalFormat df = new DecimalFormat("#0.0");
         df.setRoundingMode(RoundingMode.HALF_UP);

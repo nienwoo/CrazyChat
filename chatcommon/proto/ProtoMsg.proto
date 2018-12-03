@@ -1,3 +1,5 @@
+syntax = "proto2";
+
 option java_package = "com.crazymakercircle.chat.common.bean.msg";
 option java_outer_classname = "ProtoMsg";
 
@@ -28,7 +30,6 @@ message LoginResponse{
     required uint32 code = 2;
     required string info = 3;
     required uint32 expose = 4;
-    required string session_id = 5;
 }
 
 
@@ -40,8 +41,7 @@ message MessageRequest{
     required uint64 time = 4;
     required uint32 msg_type = 5;
     required string content = 6;
-    required string session_id = 7;
-		optional string url = 8;
+	optional string url = 8;
     optional string property = 9;
     optional string from_nick = 10;
     optional string json = 11;
@@ -71,8 +71,8 @@ message MessageNotification
 message Message
 {
  required HeadType type = 1;
- required uint64   sequence = 2;//消息系列号
- required fixed32  session_id = 3;
+ required uint64  sequence = 2;
+ required string  session_id = 3;
  optional LoginRequest loginRequest = 4;
  optional LoginResponse loginResponse = 5;
  optional MessageRequest messageRequest = 6;

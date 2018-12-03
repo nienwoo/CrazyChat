@@ -38,7 +38,6 @@ message LoginResponse{
     required uint32 code = 2;	//错误码
     required string info = 3;	//错误描述
     required uint32 expose = 4;	//错误描述是否提示给用户:1 提示;0 不提示
-    required string session_id = 5;		//sessionId
 }
 
 
@@ -85,7 +84,7 @@ message Message
 {
  required HeadType type = 1; //消息类型
  required uint64   sequence = 2;//消息系列号
- required fixed32  session_id = 3;
+ required string  session_id = 3;
  optional LoginRequest loginRequest = 4;
  optional LoginResponse loginResponse = 5;
  optional MessageRequest messageRequest = 6;

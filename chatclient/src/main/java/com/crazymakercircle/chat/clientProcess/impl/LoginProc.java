@@ -30,24 +30,13 @@ public class LoginProc extends AbstractProc
 
         User user = User.fromMsg(info);
 
-        if (StringUtils.isEmpty(user.getToken()))
-        {
-            ProtoInstant.ResultCodeEnum resultcode = ProtoInstant.ResultCodeEnum.NO_TOKEN;
-            ProtoMsg.Message response =
-                    ServerMsgBuilder.buildLoginResponce(resultcode, proto.getSequence(), "");
-            session.writeAndClose(response);
-            return;
-        }
+
 
         session.setUser(user);
         SessionMap.sharedInstance().addSession(session.getSessionId(), session);
 
         String sid = session.getSessionId();
 
-        ProtoInstant.ResultCodeEnum resultcode = ProtoInstant.ResultCodeEnum.SUCCESS;
-        ProtoMsg.Message response =
-                ServerMsgBuilder.buildLoginResponce(resultcode, proto.getSequence(), sid);
-        session.write(response);
-    }
+        }
 
 }

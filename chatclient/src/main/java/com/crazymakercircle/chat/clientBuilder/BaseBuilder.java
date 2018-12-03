@@ -1,5 +1,6 @@
 package com.crazymakercircle.chat.clientBuilder;
 
+import com.crazymakercircle.chat.client.ClientSession;
 import com.crazymakercircle.chat.common.bean.msg.ProtoMsg;
 
 /**
@@ -11,10 +12,14 @@ public class BaseBuilder
 {
     protected ProtoMsg.HeadType type;
     private long seqId;
+    private ClientSession session;
 
-    public BaseBuilder(ProtoMsg.HeadType type)
+    public BaseBuilder(
+            ProtoMsg.HeadType type,
+            ClientSession session)
     {
         this.type = type;
+        this.session = session;
     }
 
     /**
@@ -24,9 +29,12 @@ public class BaseBuilder
     {
         this.seqId = seqId;
 
-        ProtoMsg.Message.Builder mb = ProtoMsg.Message.newBuilder()
-                .setType(type)
-                .setSequence(seqId);
+        ProtoMsg.Message.Builder mb =
+                ProtoMsg.Message
+                        .newBuilder()
+                        .setType(type)
+                        .setSessionId(session.getSessionId())
+                        .setSequence(seqId);
         return mb.buildPartial();
     }
 

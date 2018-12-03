@@ -4,23 +4,33 @@
 
 package com.crazymakercircle.chat.clientBuilder;
 
+import com.crazymakercircle.chat.client.ClientSession;
 import com.crazymakercircle.chat.common.bean.ChatMsg;
+import com.crazymakercircle.chat.common.bean.User;
 import com.crazymakercircle.chat.common.bean.msg.ProtoMsg;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 
 /**
  * 聊天消息Builder
  */
+
 public class ChatMsgBuilder extends BaseBuilder
 {
 
 
     private ChatMsg chatMsg;
+    private User user;
 
 
-    public ChatMsgBuilder(ChatMsg chatMsg)
+    public ChatMsgBuilder(
+            ChatMsg chatMsg,
+            User user,
+            ClientSession session)
     {
-        super(ProtoMsg.HeadType.LOGIN_REQUEST);
+        super(ProtoMsg.HeadType.LOGIN_REQUEST,session);
         this.chatMsg = chatMsg;
+        this.user=user;
+
     }
 
 
@@ -31,12 +41,19 @@ public class ChatMsgBuilder extends BaseBuilder
                 = ProtoMsg.MessageRequest.newBuilder();
 
         chatMsg.fillMsg(cb);
-        return message.toBuilder().setMessageRequest(cb).build();
+        return message
+                .toBuilder()
+                .setMessageRequest(cb)
+                .build();
     }
 
-    public static ProtoMsg.Message buildChatMsg(ChatMsg chatMsg)
+    public static ProtoMsg.Message buildChatMsg(
+            ChatMsg chatMsg,
+            User user,
+            ClientSession session)
     {
-        ChatMsgBuilder builder = new ChatMsgBuilder(chatMsg);
+        ChatMsgBuilder builder =
+                new ChatMsgBuilder(chatMsg,user,session);
         return builder.build();
 
     }

@@ -4,14 +4,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUti {
+public class DateUti
+{
 
     /**
      * 取得今天的日期
      *
      * @return
      */
-    public static String getToday() {
+    public static String getToday()
+    {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -23,7 +25,8 @@ public class DateUti {
      *
      * @return
      */
-    public static String getYestoday() {
+    public static String getYestoday()
+    {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
@@ -32,7 +35,8 @@ public class DateUti {
         return sdf.format(date.getTime());
     }
 
-    public static String getNow() {
+    public static String getNow()
+    {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         return sdf.format(new Date().getTime());

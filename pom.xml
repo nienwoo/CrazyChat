@@ -11,8 +11,6 @@
         <module>chatcommon</module>
         <module>chatserver</module>
         <module>chatclient</module>
-        <module>Tools</module>
-        <module>WebServer</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -33,7 +31,7 @@
         <feign.form.spring.version>3.0.3</feign.form.spring.version>
         <spring.version>4.3.11.RELEASE</spring.version>
         <fastjson.version>1.2.29</fastjson.version>
-       <rocketmq.version>4.1.0-incubating</rocketmq.version>
+        <rocketmq.version>4.1.0-incubating</rocketmq.version>
 
     </properties>
 

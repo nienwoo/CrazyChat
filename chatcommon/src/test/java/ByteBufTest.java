@@ -2,8 +2,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
 
-public class ByteBufTest {
-    public static void test1() {
+public class ByteBufTest
+{
+    public static void test1()
+    {
         ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(9, 100);
 
         print("allocate ByteBuf(9, 100)", buffer);
@@ -20,7 +22,8 @@ public class ByteBufTest {
 
     }
 
-    public static void testSlice() {
+    public static void testSlice()
+    {
         ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(9, 100);
 
         print("allocate ByteBuf(9, 100)", buffer);
@@ -28,10 +31,12 @@ public class ByteBufTest {
         buffer.writeBytes(new byte[]{1, 2, 3, 4});
         print("writeBytes(1,2,3,4)", buffer);
 
-        ByteBuf buffer1= buffer.slice();
-       print("buffer slice", buffer1);
+        ByteBuf buffer1 = buffer.slice();
+        print("buffer slice", buffer1);
     }
-    public static void test2(String[] args) {
+
+    public static void test2(String[] args)
+    {
         ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(9, 100);
 
         print("allocate ByteBuf(9, 100)", buffer);
@@ -69,11 +74,15 @@ public class ByteBufTest {
         print("readBytes(" + dst.length + ")", buffer);
 
     }
-    public static void main(String[] args) {
+
+    public static void main(String[] args)
+    {
 //       test1();
         testSlice();
     }
-    private static void print(String action, ByteBuf buffer) {
+
+    private static void print(String action, ByteBuf buffer)
+    {
         System.out.println("after ===========" + action + "============");
         System.out.println("capacity(): " + buffer.capacity());
         System.out.println("maxCapacity(): " + buffer.maxCapacity());

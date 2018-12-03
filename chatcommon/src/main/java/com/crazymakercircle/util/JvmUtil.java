@@ -4,9 +4,11 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
 
-public class JvmUtil {
+public class JvmUtil
+{
 
-    public static final int getProcessID() {
+    public static final int getProcessID()
+    {
         //  ManagementFactory是一个在运行时管理和监控Java VM的工厂类
         //  它能提供很多管理VM的静态接口的运行时实例，比如RuntimeMXBean
         //  RuntimeMXBean是Java虚拟机的运行时管理接口.

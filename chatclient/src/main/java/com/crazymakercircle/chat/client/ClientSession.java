@@ -5,6 +5,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.util.AttributeKey;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,16 +54,17 @@ public class ClientSession
     }
 
 
-
     public String getRemoteAddress()
     {
         return channel.remoteAddress().toString();
     }
 
 
-    public synchronized void writeAndFlush(Object pkg)
+    public synchronized ChannelFuture sengPackage(Object pkg)
     {
-        channel.writeAndFlush(pkg);
+        ChannelFuture f=  channel.writeAndFlush(pkg);
+
+        return f;
     }
 
     public synchronized void writeAndClose(Object pkg)

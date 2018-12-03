@@ -69,10 +69,10 @@ public class User
 
     public void setPlatform(int platform)
     {
-        PLATTYPE[] values=   PLATTYPE.values();
+        PLATTYPE[] values = PLATTYPE.values();
         for (int i = 0; i < values.length; i++)
         {
-            if(values[i].ordinal()==platform)
+            if (values[i].ordinal() == platform)
             {
                 this.platform = values[i];
             }

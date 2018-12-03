@@ -13,7 +13,7 @@ public class ProtoInstant
         public static final int OP_Login_REQUEST = 1;
 
         //登陆应答
-        public static final int OP_Login_RESPONSE  = 2;
+        public static final int OP_Login_RESPONSE = 2;
 
 
         //心跳请求
@@ -34,21 +34,33 @@ public class ProtoInstant
 
     /**
      * 客户端平台
-     *
      */
-    public interface Platform {
-        /**windwos*/
+    public interface Platform
+    {
+        /**
+         * windwos
+         */
         public static final int WINDOWS = 1;
 
-        /**mac*/
+        /**
+         * mac
+         */
         public static final int MAC = 2;
-        /**android端*/
-        public static final int ANDROID =3;
-        /**IOS端*/
+        /**
+         * android端
+         */
+        public static final int ANDROID = 3;
+        /**
+         * IOS端
+         */
         public static final int IOS = 4;
-        /**WEB端*/
+        /**
+         * WEB端
+         */
         public static final int WEB = 5;
-        /**未知*/
+        /**
+         * 未知
+         */
         public static final int UNKNOWN = 6;
 
 
@@ -57,9 +69,12 @@ public class ProtoInstant
     /**
      * 协议细节
      */
-    public class Protocal {
+    public class Protocal
+    {
 
-        /**报文头长度*/
+        /**
+         * 报文头长度
+         */
         public static final int HEADER_LENGTH = 16;
         public static final int FIELD_PACKAGE_SIZE_LENGTH = 4;
         public static final int FIELD_VERSION_LENGTH = 2;
@@ -75,10 +90,9 @@ public class ProtoInstant
     {
 
         SUCCESS(0, "Success"),  // 成功
-        AUTH_FAILED(-1,"登录失败"),
-        NO_TOKEN(-2,"没有授权码"),
-        UNKNOW_ERROR(-3,"未知错误"),
-        ;
+        AUTH_FAILED(-1, "登录失败"),
+        NO_TOKEN(-2, "没有授权码"),
+        UNKNOW_ERROR(-3, "未知错误"),;
 
         private Integer code;
         private String desc;

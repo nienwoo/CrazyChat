@@ -70,10 +70,9 @@ public class ChatServer
                     channelFuture.channel().localAddress());
 
 
-
             // 7 监听通道关闭事件
             // 应用程序会一直等待，直到channel关闭
-            ChannelFuture closeFuture=  channelFuture.channel().closeFuture();
+            ChannelFuture closeFuture = channelFuture.channel().closeFuture();
             closeFuture.sync();
         } catch (Exception e)
         {

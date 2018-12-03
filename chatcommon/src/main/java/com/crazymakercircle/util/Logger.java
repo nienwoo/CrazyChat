@@ -6,19 +6,24 @@
 package com.crazymakercircle.util;
 
 
-public class Logger {
+public class Logger
+{
 
     /**
      * 信息输出
      *
      * @param s 输出的字符串形参
      */
-    public static void debug(Object s) {
+    public static void debug(Object s)
+    {
 
         String content = null;
-        if (null != s) {
+        if (null != s)
+        {
             content = s.toString().trim();
-        } else {
+        }
+        else
+        {
             content = "";
         }
 
@@ -30,11 +35,15 @@ public class Logger {
      *
      * @param s 待输出的字符串形参
      */
-    public static void info(Object s) {
+    public static void info(Object s)
+    {
         String content = null;
-        if (null != s) {
+        if (null != s)
+        {
             content = s.toString().trim();
-        } else {
+        }
+        else
+        {
             content = "";
         }
 
@@ -47,12 +56,16 @@ public class Logger {
      *
      * @param s 待输出的字符串形参
      */
-    synchronized public static void infoC(Object s) {
+    synchronized public static void infoC(Object s)
+    {
 
         String content = null;
-        if (null != s) {
+        if (null != s)
+        {
             content = s.toString().trim();
-        } else {
+        }
+        else
+        {
             content = "";
         }
 
@@ -65,7 +78,8 @@ public class Logger {
      *
      * @param s 待输出的字符串形参
      */
-    synchronized public static void tcfo(Object s) {
+    synchronized public static void tcfo(Object s)
+    {
         String cft = "[" + Thread.currentThread().getName() + "|" + ReflectionUtil.getNakeCallClassMethod() + "]";
         System.out.println(cft + "：" + s);
     }
@@ -75,7 +89,8 @@ public class Logger {
      *
      * @param s 提示的字符串形参
      */
-    public static void hint(Object s) {
+    public static void hint(Object s)
+    {
         System.out.println("/--" + s + "--/");
     }
 }
