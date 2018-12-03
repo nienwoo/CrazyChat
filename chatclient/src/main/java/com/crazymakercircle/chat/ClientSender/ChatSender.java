@@ -19,9 +19,7 @@ public class ChatSender extends BaseSender
 
     public void sendChatMsg(String content, String touid)
     {
-
-
-        log.info("发送消息 start");
+       log.info("发送消息 start");
         ChatMsg chatMsg = new ChatMsg(getUser());
         chatMsg.setContent(content);
         chatMsg.setMsgType(ChatMsg.MSGTYPE.TEXT);
@@ -33,5 +31,20 @@ public class ChatSender extends BaseSender
         super.sendMsg(message);
     }
 
+    @Override
+    protected void sendSucced(ProtoMsg.Message message)
+    {
+        log.info("发送成功:"+message.getMessageRequest().getContent());
+    }
 
+    @Override
+    protected void sendException(ProtoMsg.Message message)
+    {
+        log.info("发送异常:"+message.getMessageRequest().getContent());
+    }
+    @Override
+    protected void sendfailed(ProtoMsg.Message message)
+    {
+        log.info("发送失败:"+message.getMessageRequest().getContent());
+    }
 }
