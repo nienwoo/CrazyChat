@@ -5,9 +5,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.util.AttributeKey;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,19 +16,18 @@ import java.util.Map;
 /**
  * 实现服务器Socket Session会话
  */
+@Slf4j
 @Data
 public class ClientSession
 {
 
     //session唯一标示
-    private final static String SESSION_UNIQUE_ID = "session_unique_id";
+    private final static String SESSION_UNIQUE_ID =
+            "session_unique_id";
 
 
-    private Logger LOGGER = LoggerFactory.getLogger(ClientSession.class);
-
-    public static final AttributeKey<String> KEY_USER_ID = AttributeKey.valueOf("key");
-
-    public static final AttributeKey<ClientSession> SESSION = AttributeKey.valueOf("session");
+    public static final AttributeKey<ClientSession> SESSION =
+            AttributeKey.valueOf("session");
 
 
     /**
@@ -62,7 +60,7 @@ public class ClientSession
 
     public synchronized ChannelFuture sengPackage(Object pkg)
     {
-        ChannelFuture f=  channel.writeAndFlush(pkg);
+        ChannelFuture f = channel.writeAndFlush(pkg);
 
         return f;
     }
@@ -83,7 +81,7 @@ public class ClientSession
             {
                 if (future.isSuccess())
                 {
-                    LOGGER.error("CHANNEL_CLOSED ");
+                    log.error("CHANNEL_CLOSED ");
                 }
             }
         });

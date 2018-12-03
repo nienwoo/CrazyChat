@@ -19,12 +19,13 @@ import org.springframework.stereotype.Service;
 
 @Data
 @Slf4j
-public class BaseSender
+public abstract class BaseSender
 {
 
 
     private User user;
     private ClientSession session;
+
 
     public boolean isConnected()
     {
@@ -66,9 +67,7 @@ public class BaseSender
                     throw new Exception("还没有登录");
                 }
 
-
                 final Boolean[] isSuccess = {false};
-
 
                 ChannelFuture f = getSession().sengPackage(message);
                 f.addListener(new GenericFutureListener<Future<? super Void>>()
@@ -78,12 +77,13 @@ public class BaseSender
                             throws Exception
                     {
                         // 回调
-                        isSuccess[0] = true;
-
+                        if (future.isSuccess())
+                        {
+                            isSuccess[0] = true;
+                        }
                     }
 
                 });
-
 
 
                 try
@@ -91,6 +91,7 @@ public class BaseSender
                     f.sync();
                 } catch (InterruptedException e)
                 {
+                    isSuccess[0]=false;
                     e.printStackTrace();
                     throw new Exception("error occur");
                 }
@@ -103,9 +104,10 @@ public class BaseSender
             {
                 if(b)
                 {
-                    log.info("发送成功");
+                    BaseSender.this.sendSucced(message);
+
                 }else {
-                    log.info("发送失败");
+                    BaseSender.this.sendfailed(message);
 
                 }
             }
@@ -113,10 +115,23 @@ public class BaseSender
             @Override
             public void onFailure(Throwable t)
             {
-                log.info("发送消息出现异常");
-
+                BaseSender.this.sendException(message);
             }
         });
 
     }
+
+    protected  void sendSucced(ProtoMsg.Message message){
+        log.info("发送成功");
+
+    }
+    protected  void sendfailed(ProtoMsg.Message message){
+        log.info("发送失败");
+    }
+
+    protected  void sendException(ProtoMsg.Message message){
+        log.info("发送消息出现异常");
+
+    }
+
 }
