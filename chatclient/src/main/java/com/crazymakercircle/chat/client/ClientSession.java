@@ -73,6 +73,8 @@ public class ClientSession
 
     public synchronized void close()
     {
+        isConnected=false;
+
         ChannelFuture future = channel.close();
         future.addListener(new ChannelFutureListener()
         {
@@ -86,6 +88,7 @@ public class ClientSession
             }
         });
     }
+
 
 
 }

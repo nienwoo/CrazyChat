@@ -2,25 +2,17 @@ package com.crazymakercircle.chat.client;
 
 import com.crazymakercircle.chat.ClientSender.ChatSender;
 import com.crazymakercircle.chat.ClientSender.LoginSender;
-import com.crazymakercircle.chat.clientHandler.ChatMsgHandler;
 import com.crazymakercircle.chat.common.bean.User;
-import com.crazymakercircle.chat.common.codec.ProtobufDecoder;
-import com.crazymakercircle.chat.common.codec.ProtobufEncoder;
-import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.PooledByteBufAllocator;
+import com.crazymakercircle.cocurrent.QueueTaskThread;
 import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 @Data
@@ -29,141 +21,128 @@ public class ChatClient
 {
     static final Logger LOGGER =
             LoggerFactory.getLogger(ChatClient.class);
-    // 服务器ip地址
-    @Value("${server.ip}")
-    private String host;
-    // 服务器端口
-    @Value("${server.port}")
-    private int port;
 
-    // 通过nio方式来接收连接和处理连接
-    private EventLoopGroup group = new NioEventLoopGroup();
 
     @Autowired
-    private ChatMsgHandler chatClientHandler;
+    private NettyConnector nettyConnector;
 
     private Channel channel;
     private ChatSender sender;
     private LoginSender l;
 
-    /**
-     * 唯一标记
-     */
+
     private boolean initFalg = true;
     private User user;
 
-    /**
-     * 客户端的是Bootstrap，服务端的则是 ServerBootstrap。
-     * 都是AbstractBootstrap的子类。
-     **/
-    public void run()
+    GenericFutureListener<ChannelFuture> closeListener = (ChannelFuture f) ->
     {
-        doConnect(new Bootstrap(), group);
-    }
 
-    /**
-     * 重连
-     */
-    public void doConnect(Bootstrap bootstrap, EventLoopGroup eventLoopGroup)
+
+        LOGGER.info(new Date() + ": 连接已经断开……");
+        channel = f.channel();
+
+        // 创建会话
+        ClientSession session =
+                channel.attr(ClientSession.SESSION).get();
+        session.close();
+        nettyConnector.close();
+
+        //唤醒用户线程
+        ChatClient.this.notifyAll();
+    };
+
+
+    GenericFutureListener<ChannelFuture> connectedListener = (ChannelFuture f) ->
     {
-        ChannelFuture f = null;
-        try
+        final EventLoop eventLoop
+                = f.channel().eventLoop();
+        if (!f.isSuccess())
         {
-            if (bootstrap != null)
-            {
-                bootstrap.group(eventLoopGroup);
-                bootstrap.channel(NioSocketChannel.class);
-                bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-                bootstrap.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-                bootstrap.remoteAddress(host, port);
+            LOGGER.info("与服务端断开连接!在10s之后准备尝试重连!");
+            eventLoop.schedule(() -> nettyConnector.doConnect(), 10, TimeUnit.SECONDS);
 
-                // 设置通道初始化
-                bootstrap.handler(
-                        new ChannelInitializer<SocketChannel>()
-                        {
-                            public void initChannel(SocketChannel ch) throws Exception
-                            {
-                                ch.pipeline().addLast(new ProtobufDecoder());
-                                ch.pipeline().addLast(new ProtobufEncoder());
-                                ch.pipeline().addLast(chatClientHandler);
-
-                            }
-                        }
-                );
-                LOGGER.info(new Date() + "客户端开始登录[疯狂创客圈IM]");
-
-                f = bootstrap.connect().addListener((ChannelFuture futureListener) ->
-                {
-                    final EventLoop eventLoop = futureListener.channel().eventLoop();
-                    if (!futureListener.isSuccess())
-                    {
-                        LOGGER.info("与服务端断开连接!在10s之后准备尝试重连!");
-                        eventLoop.schedule(() -> doConnect(new Bootstrap(), eventLoop), 10, TimeUnit.SECONDS);
-
-                        initFalg = false;
-                    }
-                    else
-                    {
-                        initFalg = true;
-                    }
-                    if (initFalg)
-                    {
-                        LOGGER.info("EchoClient客户端连接成功!");
-
-                        LOGGER.info(new Date() + ": 连接成功，启动控制台线程……");
-                        channel = futureListener.channel();
-
-                        // 创建会话
-                        ClientSession session = new ClientSession(channel);
-                        channel.attr(ClientSession.SESSION).set(session);
-                        session.setUser(ChatClient.this.getUser());
-                        startConsoleThread();
-                    }
-
-                });
-
-                // 阻塞
-                f.channel().closeFuture().sync();
-            }
-        } catch (Exception e)
+            initFalg = false;
+        }
+        else
         {
-            LOGGER.info("客户端连接失败!" + e.getMessage());
+            initFalg = true;
+        }
+        if (initFalg)
+        {
+            LOGGER.info("EchoClient客户端连接成功!");
+            channel = f.channel();
+
+            // 创建会话
+            ClientSession session = new ClientSession(channel);
+            channel.attr(ClientSession.SESSION).set(session);
+            session.setUser(ChatClient.this.getUser());
+            startUserThread();
+
+            channel.closeFuture().addListener(closeListener);
+
+            //唤醒用户线程
+            ChatClient.this.notify();
         }
 
+    };
+
+
+    public void start()
+    {
+        QueueTaskThread.add(() ->
+        {
+            nettyConnector.setConnectedListener(connectedListener);
+            nettyConnector.doConnect();
+        });
     }
 
-    private void startConsoleThread()
+
+    public void notifyUserThread()
     {
-        new Thread(() ->
+        synchronized (this)
         {
+            //唤醒主线程
+            this.notify();
+        }
+    }
 
+    public void startUserThread()
+            throws InterruptedException
+    {
+        while(true)
+        {
+            //建立连接
+            while (initFalg == false)
+            {
+                synchronized (this)
+                {
+                    //开始连接
+                    start();
+                    this.wait();
+                }
+            }
 
+            //登录
             while (!sender.isLogin())
             {
 
-                l.sendLoginMsg();
-                try
+                synchronized (this)
                 {
-                    Thread.sleep(500);
-                } catch (InterruptedException e)
-                {
-                    e.printStackTrace();
+                    l.sendLoginMsg();
+
+                    //开始连接
+                    start();
+                    this.wait();
                 }
             }
-            while (sender.isLogin() && !Thread.interrupted())
+
+
+            //处理命令
+            while (!sender.isLogin())
             {
 
-                System.out.println("输入消息发送至服务端: ");
-
-                Scanner sc = new Scanner(System.in);
-
-                String line = sc.nextLine();
-
-                String[] toAndMsg = line.split("\\s+|\\s+");
-
-                sender.sendChatMsg(toAndMsg[1], toAndMsg[0]);
             }
-        }).start();
+        }
     }
 
 
