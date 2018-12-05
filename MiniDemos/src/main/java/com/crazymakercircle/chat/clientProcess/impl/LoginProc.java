@@ -1,0 +1,42 @@
+package com.crazymakercircle.chat.clientProcess.impl;
+
+import com.crazymakercircle.chat.clientProcess.AbstractProc;
+import com.crazymakercircle.chat.common.ProtoInstant;
+import com.crazymakercircle.chat.common.ServerMsgBuilder;
+import com.crazymakercircle.chat.common.ServerSession;
+import com.crazymakercircle.chat.common.SessionMap;
+import com.crazymakercircle.chat.common.bean.User;
+import com.crazymakercircle.chat.common.bean.msg.ProtoMsg;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+public class LoginProc extends AbstractProc
+{
+    private Logger LOGGER = LoggerFactory.getLogger(LoginProc.class);
+
+    @Override
+    public ProtoMsg.HeadType op()
+    {
+        return ProtoMsg.HeadType.LOGIN_REQUEST;
+    }
+
+    @Override
+    public void action(ServerSession session, ProtoMsg.Message proto) throws Exception
+    {
+        // 取出token验证
+        ProtoMsg.LoginRequest info = proto.getLoginRequest();
+
+        User user = User.fromMsg(info);
+
+
+
+        session.setUser(user);
+        SessionMap.sharedInstance().addSession(session.getSessionId(), session);
+
+        String sid = session.getSessionId();
+
+        }
+
+}

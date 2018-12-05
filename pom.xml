@@ -11,6 +11,7 @@
         <module>chatcommon</module>
         <module>chatserver</module>
         <module>chatclient</module>
+        <module>mini-demos</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -2,7 +2,8 @@ package com.crazymakercircle.chat.clientCommand;
 
 import java.util.Scanner;
 
-public interface ConsoleCommand {
+public interface BaseCommand
+{
     void exec(Scanner scanner);
 
     String getKey();

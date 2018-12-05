@@ -14,18 +14,24 @@ import org.springframework.context.annotation.Configuration;
 //使包路径下带有@Autowired的类可以自动注入
 @ComponentScan("com.crazymakercircle.chat.client")
 @SpringBootApplication
-public class ClientApp
+public class ClientApplication
 {
-
     /**
      * @param args
      */
     public static void main(String[] args)
     {
         // 启动并初始化 Spring 环境及其各 Spring 组件
-        ApplicationContext context = SpringApplication.run(ClientApp.class, args);
-        ChatClient chatClient = context.getBean(ChatClient.class);
-        chatClient.run();
+        ApplicationContext context = SpringApplication.run(ClientApplication.class, args);
+        CommandClient commandClient = context.getBean(CommandClient.class);
+        try
+        {
+            commandClient.startUserThread();
+
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 
