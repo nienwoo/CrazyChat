@@ -3,22 +3,18 @@ package com.crazymakercircle.im.common.codec;
 
 import com.crazymakercircle.im.common.bean.msg.ProtoMsg;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * 编码器
  */
-
+@Slf4j
 public class ProtobufEncoder extends MessageToByteEncoder<ProtoMsg.Message>
 {
-    /**
-     * 日志对象
-     */
-    private final static Logger LOGGER = LoggerFactory.getLogger(ProtobufEncoder.class);
 
     @Override
     protected void encode(ChannelHandlerContext ctx,
@@ -41,10 +37,16 @@ public class ProtobufEncoder extends MessageToByteEncoder<ProtoMsg.Message>
         buf.writeBytes(bytes);
         out.writeBytes(buf);
 
-        LOGGER.debug("send "
+        log.debug("send "
                 + "[remote ip:" + ctx.channel().remoteAddress()
                 + "][total length:" + length
                 + "][bare length:" + msg.getSerializedSize() + "]");
+
+        if(buf.refCnt()>0)
+        {
+            log.debug("释放临时缓冲");
+            buf.release();
+        }
 
     }
 

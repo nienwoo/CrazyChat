@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.ReferenceCountUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,12 +15,10 @@ import java.util.List;
 /**
  * 解码器
  */
+
+@Slf4j
 public class ProtobufDecoder extends ByteToMessageDecoder
 {
-    /**
-     * 日志
-     */
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in,
@@ -50,22 +49,20 @@ public class ProtobufDecoder extends ByteToMessageDecoder
         }
 
 
-        byte[] array;
-        int offset;
+        byte[] array ;
+        int offset=0;
         if (in.hasArray())
         {
             //堆缓冲
-            array = new byte[length];
-//            byte[]   readArray =  in.array();
-            offset = in.arrayOffset() + in.readerIndex();
-            in.getBytes(in.readerIndex(), array, offset, length);
+//            offset = in.arrayOffset() + in.readerIndex();
+            ByteBuf slice=in.slice();
+            array=slice.array();
         }
         else
         {
             //直接缓冲
             array = new byte[length];
-            offset = 0;
-            in.getBytes(in.readerIndex(), array, 0, length);
+            in.readBytes( array, 0, length);
         }
 
         // 字节转成对象
