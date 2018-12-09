@@ -1,7 +1,6 @@
-syntax = "proto2";
-
 option java_package = "com.crazymakercircle.im.common.bean.msg";
 option java_outer_classname = "ProtoMsg";
+
 
 enum HeadType
 {

@@ -55,7 +55,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:4.3.13.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-devtools:1.5.9.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-all:4.0.33.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:2.6.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.6.1" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.16.10" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:17.0" level="project" />

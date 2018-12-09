@@ -117,18 +117,4 @@ public class CallbackTaskScheduler extends Thread
 
     }
 
-    class ExecuteRunnable implements Runnable
-    {
-        ExecuteTask executeTask;
-
-        ExecuteRunnable(ExecuteTask executeTask)
-        {
-            this.executeTask = executeTask;
-        }
-
-        public void run()
-        {
-            executeTask.execute();
-        }
-    }
 }
