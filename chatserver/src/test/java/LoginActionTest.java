@@ -1,13 +1,7 @@
-import com.crazymakercircle.chat.feignClient.UserAction;
+import com.crazymakercircle.imServer.feignClient.UserAction;
 import feign.Feign;
 import feign.codec.StringDecoder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Created by 尼恩 at 疯狂创客圈

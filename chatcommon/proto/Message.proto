@@ -1,6 +1,6 @@
 //定义protobuf的包名称空间
 
-option java_package = "com.crazymakercircle.chat.common.bean.msg";
+option java_package = "com.crazymakercircle.im.common.bean.msg";
 
 // 消息体名称
 option java_outer_classname = "ProtoMsg";

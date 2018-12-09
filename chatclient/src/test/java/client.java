@@ -1,6 +1,6 @@
-import com.crazymakercircle.chat.ClientSender.ChatSender;
-import com.crazymakercircle.chat.client.ClientSession;
-import com.crazymakercircle.chat.common.bean.User;
+import com.crazymakercircle.im.common.bean.User;
+import com.crazymakercircle.imClient.ClientSender.ChatSender;
+import com.crazymakercircle.imClient.client.ClientSession;
 import org.junit.Test;
 
 /**
